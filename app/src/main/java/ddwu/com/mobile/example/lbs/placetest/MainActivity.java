@@ -79,8 +79,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Toast.makeText(this, "'카페'나 '검색'을 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
                 if (etKeyword.getText().toString().equals("카페")) {
+                    mGoogleMap.clear();
                     searchStart(PlaceType.CAFE);
                 } else if (etKeyword.getText().toString().equals("식당")) {
+                    mGoogleMap.clear();
                     searchStart(PlaceType.RESTAURANT);
                 }
                 break;
@@ -248,38 +250,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     /*구글이 현재 위치의 주변 정보를 확인하는 기본 방법 사용 메소드*/
-    private void startCPSearch() {
-        // Use fields to define the data types to return.
-        List<Place.Field> placeFields = Collections.singletonList(Place.Field.ID);
-
-        // Use the builder to create a FindCurrentPlaceRequest.
-        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(placeFields);
-
-        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
-
-        if (checkPermission()) {
-            Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
-            placeResponse.addOnCompleteListener(new OnCompleteListener<FindCurrentPlaceResponse>() {
-                @Override
-                public void onComplete(@NonNull Task<FindCurrentPlaceResponse> task) {
-                    if (task.isSuccessful()){
-                        FindCurrentPlaceResponse response = task.getResult();
-                        for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
-//                            Log.i(TAG, String.format("Place ID: %s", placeLikelihood.getPlace().getId()));
-                            Log.i(TAG, String.format("Place '%s' has likelihood: %f",
-                                    placeLikelihood.getPlace().getId(),
-                                    placeLikelihood.getLikelihood()));
-                        }
-                    } else {
-                        Exception exception = task.getException();
-                        if (exception instanceof ApiException) {
-                            ApiException apiException = (ApiException) exception;
-                            Log.e(TAG, "Place not found: " + apiException.getStatusCode());
-                        }
-                    }
-                }
-            });
-        }
-    }
+//    private void startCPSearch() {
+//        // Use fields to define the data types to return.
+//        List<Place.Field> placeFields = Collections.singletonList(Place.Field.ID);
+//
+//        // Use the builder to create a FindCurrentPlaceRequest.
+//        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(placeFields);
+//
+//        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
+//
+//        if (checkPermission()) {
+//            Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
+//            placeResponse.addOnCompleteListener(new OnCompleteListener<FindCurrentPlaceResponse>() {
+//                @Override
+//                public void onComplete(@NonNull Task<FindCurrentPlaceResponse> task) {
+//                    if (task.isSuccessful()){
+//                        FindCurrentPlaceResponse response = task.getResult();
+//                        for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
+////                            Log.i(TAG, String.format("Place ID: %s", placeLikelihood.getPlace().getId()));
+//                            Log.i(TAG, String.format("Place '%s' has likelihood: %f",
+//                                    placeLikelihood.getPlace().getId(),
+//                                    placeLikelihood.getLikelihood()));
+//                        }
+//                    } else {
+//                        Exception exception = task.getException();
+//                        if (exception instanceof ApiException) {
+//                            ApiException apiException = (ApiException) exception;
+//                            Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+//                        }
+//                    }
+//                }
+//            });
+//        }
+//    }
 
 }
